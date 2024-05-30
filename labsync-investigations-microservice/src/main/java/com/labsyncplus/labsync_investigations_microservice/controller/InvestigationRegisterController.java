@@ -17,6 +17,11 @@ public class InvestigationRegisterController {
 
     @PostMapping("registerNew")
     public ResponseEntity<String> registerNewInvestigation(@RequestBody RegNewInvestigationDto newInvestigationData) {
-        return investigationRegisterService.addNewRegistration(newInvestigationData);
+        return investigationRegisterService.addNewRegistration(
+                newInvestigationData.getPatient_id(),
+                newInvestigationData.getInvestigation_id(),
+                newInvestigationData.getInvestigation_date(),
+                newInvestigationData.getInvestigation_cost()
+        );
     }
 }
