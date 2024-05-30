@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LabsyncInvestigationDataApplication {
+public class LabsyncInvestigationDataMicroserviceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LabsyncInvestigationDataApplication.class, args);
+		SpringApplication.run(LabsyncInvestigationDataMicroserviceApplication.class, args);
 	}
-
 }

@@ -1,6 +1,7 @@
 package com.labsyncplus.labsync_investigations_microservice.controller;
 
 import com.labsyncplus.labsync_investigations_microservice.model.InvestigationRegister;
+import com.labsyncplus.labsync_investigations_microservice.model.dto.AddInvestigationDataDto;
 import com.labsyncplus.labsync_investigations_microservice.model.dto.RegNewInvestigationDto;
 import com.labsyncplus.labsync_investigations_microservice.service.InvestigationRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,13 @@ public class InvestigationRegisterController {
     @GetMapping("allNoDataRegistrations")
     public ResponseEntity<List<InvestigationRegister>> getAllNoDataInvestigationRegistrations() {
         return investigationRegisterService.getAllNoDataInvestigationRegistrations();
+    }
+
+    @PostMapping("addInvestigationData")
+    public ResponseEntity<String> addInvestigationData(@RequestBody AddInvestigationDataDto addInvestigationDataDto) {
+        return investigationRegisterService.addInvestigationData(
+                addInvestigationDataDto.getInvestigationRegisterId(),
+                addInvestigationDataDto.getInvestigationData()
+        );
     }
 }

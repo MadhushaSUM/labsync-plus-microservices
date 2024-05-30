@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.labsync</groupId>
-	<artifactId>labsync-investigation-data</artifactId>
+	<artifactId>labsync-investigation-data-microservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>labsync-investigation-data</name>
+	<name>labsync-investigation-data-microservice</name>
 	<description>This microservice is responsible for keeping investigation data saved</description>
 	<properties>
 		<java.version>17</java.version>
