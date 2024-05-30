@@ -5,13 +5,13 @@ import com.labsyncplus.labsync_investigations_microservice.feign.PatientInterfac
 import com.labsyncplus.labsync_investigations_microservice.model.Investigation;
 import com.labsyncplus.labsync_investigations_microservice.model.InvestigationRegister;
 import com.labsyncplus.labsync_investigations_microservice.model.Patient;
-import com.labsyncplus.labsync_investigations_microservice.model.dto.RegNewInvestigationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,7 +44,27 @@ public class InvestigationRegisterService {
         } catch (Exception e) {
             System.err.println("Error while registering investigation");
             e.printStackTrace();
-            return new ResponseEntity<>("Server error while registring investigation", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Server error while registering investigation", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<List<InvestigationRegister>> getAllInvestigationRegistrations() {
+        try {
+            return new ResponseEntity<>(investigationRegisterDao.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println("Error while retrieving all investigation registrations");
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<List<InvestigationRegister>> getAllNoDataInvestigationRegistrations() {
+        try {
+            return new ResponseEntity<>(investigationRegisterDao.findByIsDataAddedFalse(), HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println("Error while retrieving all no data investigation registrations");
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

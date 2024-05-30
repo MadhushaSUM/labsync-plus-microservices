@@ -1,13 +1,13 @@
 package com.labsyncplus.labsync_investigations_microservice.controller;
 
+import com.labsyncplus.labsync_investigations_microservice.model.InvestigationRegister;
 import com.labsyncplus.labsync_investigations_microservice.model.dto.RegNewInvestigationDto;
 import com.labsyncplus.labsync_investigations_microservice.service.InvestigationRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("investigationRegister")
@@ -23,5 +23,15 @@ public class InvestigationRegisterController {
                 newInvestigationData.getInvestigation_date(),
                 newInvestigationData.getInvestigation_cost()
         );
+    }
+
+    @GetMapping("allRegistrations")
+    public ResponseEntity<List<InvestigationRegister>> getAllInvestigationRegistrations() {
+        return investigationRegisterService.getAllInvestigationRegistrations();
+    }
+
+    @GetMapping("allNoDataRegistrations")
+    public ResponseEntity<List<InvestigationRegister>> getAllNoDataInvestigationRegistrations() {
+        return investigationRegisterService.getAllNoDataInvestigationRegistrations();
     }
 }
