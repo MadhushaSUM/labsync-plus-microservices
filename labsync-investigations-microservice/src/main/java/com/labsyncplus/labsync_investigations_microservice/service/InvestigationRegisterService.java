@@ -97,4 +97,31 @@ public class InvestigationRegisterService {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    public ResponseEntity<InvestigationRegister> getInvestigationRegistrationById(int investigationRegisterId) {
+        try {
+            Optional<InvestigationRegister> investigationRegister = investigationRegisterDao.findById(investigationRegisterId);
+
+            if (investigationRegister.isEmpty()) {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(investigationRegister.get(), HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error while retrieving investigation registration by id");
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<List<InvestigationRegister>> getAllNotPrintedInvestigationRegistrations() {
+        try {
+            return new ResponseEntity<>(investigationRegisterDao.findByIsPrintedFalse(), HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println("Error while retrieving all no data investigation registrations");
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -31,9 +31,19 @@ public class InvestigationRegisterController {
         return investigationRegisterService.getAllInvestigationRegistrations();
     }
 
+    @GetMapping("getById/{investigationRegisterId}")
+    public ResponseEntity<InvestigationRegister> getInvestigationRegistrationById(@PathVariable int investigationRegisterId) {
+        return investigationRegisterService.getInvestigationRegistrationById(investigationRegisterId);
+    }
+
     @GetMapping("allNoDataRegistrations")
     public ResponseEntity<List<InvestigationRegister>> getAllNoDataInvestigationRegistrations() {
         return investigationRegisterService.getAllNoDataInvestigationRegistrations();
+    }
+
+    @GetMapping("allNotPrintedRegistrations")
+    public ResponseEntity<List<InvestigationRegister>> getAllNotPrintedInvestigationRegistrations() {
+        return investigationRegisterService.getAllNotPrintedInvestigationRegistrations();
     }
 
     @PostMapping("addInvestigationData")

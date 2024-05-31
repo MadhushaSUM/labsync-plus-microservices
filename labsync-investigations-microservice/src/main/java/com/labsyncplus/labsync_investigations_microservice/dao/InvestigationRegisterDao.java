@@ -8,4 +8,5 @@ import java.util.List;
 public interface InvestigationRegisterDao extends JpaRepository<InvestigationRegister, Integer> {
 
     List<InvestigationRegister> findByIsDataAddedFalse();
+    List<InvestigationRegister> findByIsPrintedFalse();
 }

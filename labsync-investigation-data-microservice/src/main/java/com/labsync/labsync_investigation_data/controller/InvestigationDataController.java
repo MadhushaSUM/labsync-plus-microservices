@@ -23,7 +23,7 @@ public class InvestigationDataController {
     }
 
     @GetMapping("FBS/{investigationRegisterId}")
-    public ResponseEntity<FastingBloodSugar> getFBSData(@RequestParam int investigationRegisterId) {
+    public ResponseEntity<FastingBloodSugar> getFBSData(@PathVariable int investigationRegisterId) {
         return fastingBloodSugarService.getFastingBloodSugarData(investigationRegisterId);
     }
 }
