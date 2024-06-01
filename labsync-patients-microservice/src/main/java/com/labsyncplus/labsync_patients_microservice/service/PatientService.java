@@ -3,6 +3,8 @@ package com.labsyncplus.labsync_patients_microservice.service;
 import com.labsyncplus.labsync_patients_microservice.Dao.PatientDao;
 import com.labsyncplus.labsync_patients_microservice.model.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,14 +18,14 @@ public class PatientService {
     @Autowired
     PatientDao patientDao;
 
-    public ResponseEntity<List<Patient>> getAllPatients() {
+    public ResponseEntity<Page<Patient>> getAllPatients(PageRequest pageable) {
         try {
-            return new ResponseEntity<>(patientDao.findAll(), HttpStatus.OK);
+            return new ResponseEntity<>(patientDao.findAll(pageable), HttpStatus.OK);
         } catch (Exception e) {
             System.err.println("Error while getting all patient data");
             e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>( new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<Patient> getPatientById(int id) {
