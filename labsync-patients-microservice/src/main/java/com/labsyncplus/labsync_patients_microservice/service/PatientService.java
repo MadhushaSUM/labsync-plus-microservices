@@ -47,4 +47,16 @@ public class PatientService {
             return new ResponseEntity<>("Error adding patient", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public ResponseEntity<Patient> updatePatient(int id, Patient patient) {
+        try {
+            patientDao.save(patient);
+            Thread.sleep(1500);
+            return new ResponseEntity<>(patient, HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println("Error while updating the patient");
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
