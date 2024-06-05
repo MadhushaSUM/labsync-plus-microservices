@@ -1,6 +1,6 @@
 package com.labsyncplus.labsync_investigations_microservice.feign;
 
-import com.labsyncplus.labsync_investigations_microservice.model.Patient;
+import com.labsyncplus.labsync_investigations_microservice.model.entity.Patient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,5 +19,5 @@ public interface PatientInterface {
     public ResponseEntity<Patient> getPatientById(@RequestParam int id);
 
     @PostMapping("patient/add")
-    public ResponseEntity<String> addNewPatient(@RequestBody Patient patient);
+    public ResponseEntity<Boolean> addNewPatient(@RequestBody Patient patient);
 }

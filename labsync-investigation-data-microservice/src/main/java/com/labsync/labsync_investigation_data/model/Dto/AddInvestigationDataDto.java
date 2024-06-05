@@ -1,6 +1,6 @@
-package com.labsyncplus.labsync_investigations_microservice.model.dto;
+package com.labsync.labsync_investigation_data.model.Dto;
 
-import com.labsyncplus.labsync_investigations_microservice.model.entity.InvestigationRegister;
+import com.labsync.labsync_investigation_data.model.entity.InvestigationRegister;
 import lombok.Data;
 
 import java.util.Map;

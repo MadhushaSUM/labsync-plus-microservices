@@ -1,7 +1,7 @@
 package com.labsyncplus.labsync_investigations_microservice.service;
 
 import com.labsyncplus.labsync_investigations_microservice.dao.InvestigationDao;
-import com.labsyncplus.labsync_investigations_microservice.model.Investigation;
+import com.labsyncplus.labsync_investigations_microservice.model.entity.Investigation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

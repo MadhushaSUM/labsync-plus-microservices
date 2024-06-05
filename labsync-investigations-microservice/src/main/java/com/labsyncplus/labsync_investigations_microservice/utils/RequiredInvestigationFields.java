@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequiredInvestigationFields {
-    private static final Map<Integer, String[]> requiredFieldsMap = new HashMap<>();
+    private static final Map<Long, String[]> requiredFieldsMap = new HashMap<>();
     private static final Map<String, Class<?>> fieldTypesMap = new HashMap<>();
 
     static {
-        requiredFieldsMap.put(2, new String[]{"fbsValue"});
+        requiredFieldsMap.put(1L, new String[]{"fbsValue"});
 
         fieldTypesMap.put("fbsValue", Double.class);
     }
 
-    public static void checkRequiredFieldAvailabilityAndType(int investigationId, Map<String, Object> investigationData) throws InvestigationNotFoundException {
+    public static void checkRequiredFieldAvailabilityAndType(long investigationId, Map<String, Object> investigationData) throws InvestigationNotFoundException {
         if (!requiredFieldsMap.containsKey(investigationId)) throw new InvestigationNotFoundException("Requested investigation is not defined");
 
         String[] requiredFields = requiredFieldsMap.get(investigationId);

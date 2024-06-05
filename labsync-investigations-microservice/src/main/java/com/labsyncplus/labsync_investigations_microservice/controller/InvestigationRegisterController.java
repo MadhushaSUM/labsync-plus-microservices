@@ -1,7 +1,7 @@
 package com.labsyncplus.labsync_investigations_microservice.controller;
 
-import com.labsyncplus.labsync_investigations_microservice.model.InvestigationRegister;
-import com.labsyncplus.labsync_investigations_microservice.model.dto.AddInvestigationDataDto;
+import com.labsyncplus.labsync_investigations_microservice.model.entity.InvestigationRegister;
+import com.labsyncplus.labsync_investigations_microservice.model.dto.AddInvestigationDataRequestDto;
 import com.labsyncplus.labsync_investigations_microservice.model.dto.RegNewInvestigationDto;
 import com.labsyncplus.labsync_investigations_microservice.service.InvestigationRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +31,8 @@ public class InvestigationRegisterController {
         return investigationRegisterService.getAllInvestigationRegistrations();
     }
 
-    @GetMapping("getById/{investigationRegisterId}")
-    public ResponseEntity<InvestigationRegister> getInvestigationRegistrationById(@PathVariable int investigationRegisterId) {
+    @GetMapping("getById")
+    public ResponseEntity<InvestigationRegister> getInvestigationRegistrationById(@RequestParam int investigationRegisterId) {
         return investigationRegisterService.getInvestigationRegistrationById(investigationRegisterId);
     }
 
@@ -47,10 +47,10 @@ public class InvestigationRegisterController {
     }
 
     @PostMapping("addInvestigationData")
-    public ResponseEntity<String> addInvestigationData(@RequestBody AddInvestigationDataDto addInvestigationDataDto) {
+    public ResponseEntity<String> addInvestigationData(@RequestBody AddInvestigationDataRequestDto addInvestigationDataRequestDto) {
         return investigationRegisterService.addInvestigationData(
-                addInvestigationDataDto.getInvestigationRegisterId(),
-                addInvestigationDataDto.getInvestigationData()
+                addInvestigationDataRequestDto.getInvestigationRegisterId(),
+                addInvestigationDataRequestDto.getInvestigationData()
         );
     }
 }

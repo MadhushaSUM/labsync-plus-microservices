@@ -1,26 +1,28 @@
 package com.labsync.labsync_investigation_data.service;
 
-import com.labsync.labsync_investigation_data.Dao.FastingBloodSugarDao;
-import com.labsync.labsync_investigation_data.model.InvestigationRegister;
-import com.labsync.labsync_investigation_data.model.investigations.FastingBloodSugar;
+import com.labsync.labsync_investigation_data.Dao.InvestigationDataDao;
+import com.labsync.labsync_investigation_data.model.entity.InvestigationRegister;
+import com.labsync.labsync_investigation_data.model.entity.InvestigationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class FastingBloodSugarService {
+public class InvestigationDataService {
     @Autowired
-    FastingBloodSugarDao fastingBloodSugarDao;
+    InvestigationDataDao investigationDataDao;
 
-    public ResponseEntity<String> addFastingBloodSugarData(InvestigationRegister investigationRegister, double fbsValue) {
+    public ResponseEntity<String> addInvestigationData(InvestigationRegister investigationRegister, Map<String, Object> data) {
         try {
-            fastingBloodSugarDao.save(new FastingBloodSugar(
-                    investigationRegister,
-                    fbsValue
-            ));
+            InvestigationData investigationData = new InvestigationData();
+            investigationData.setInvestigationRegister(investigationRegister);
+            investigationData.setDataFromMap(data);
+
+            investigationDataDao.save(investigationData);
 
             return new ResponseEntity<>("fbs data saved", HttpStatus.CREATED);
         } catch (Exception e) {
@@ -30,9 +32,9 @@ public class FastingBloodSugarService {
         }
     }
 
-    public ResponseEntity<FastingBloodSugar> getFastingBloodSugarData(int investigationRegisterId) {
+    public ResponseEntity<InvestigationData> getInvestigationData(long investigationRegisterId) {
         try {
-            Optional<FastingBloodSugar> fbsData = fastingBloodSugarDao.findByInvestigationRegisterId(investigationRegisterId);
+            Optional<InvestigationData> fbsData = investigationDataDao.findByInvestigationRegisterId(investigationRegisterId);
 
             return fbsData.map(fastingBloodSugar -> new ResponseEntity<>(fastingBloodSugar, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
 

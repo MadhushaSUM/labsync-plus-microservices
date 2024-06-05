@@ -1,8 +1,8 @@
 package com.labsyncplus.labsync_investigations_microservice.utils;
 
 import com.labsyncplus.labsync_investigations_microservice.feign.InvestigationDataInterface;
-import com.labsyncplus.labsync_investigations_microservice.model.InvestigationRegister;
-import com.labsyncplus.labsync_investigations_microservice.model.dto.AddFBSDataDto;
+import com.labsyncplus.labsync_investigations_microservice.model.entity.InvestigationRegister;
+import com.labsyncplus.labsync_investigations_microservice.model.dto.AddInvestigationDataDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,20 +19,14 @@ public class SaveInvestigationData {
     }
 
     public void saveData(InvestigationRegister investigationRegister, Map<String, Object> investigationData) {
-        switch (investigationRegister.getInvestigation().getId()) {
-            case 1:
-                // Handle case 1 if needed
-                break;
-            case 2:
-                AddFBSDataDto dto = new AddFBSDataDto();
-                dto.setInvestigationRegister(investigationRegister);
-                dto.setFbsValue((Double) investigationData.get("fbsValue"));
+        try  {
+            AddInvestigationDataDto dto = new AddInvestigationDataDto();
+            dto.setInvestigationRegister(investigationRegister);
+            dto.setInvestigationData(investigationData);
+            investigationDataInterface.addInvestigationData(dto);
 
-                investigationDataInterface.addFBSData(dto);
-                break;
-            // Add more cases as needed
-            default:
-                throw new IllegalArgumentException("Unsupported investigation ID: " + investigationRegister.getInvestigation().getId());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Investigation data saving failed");
         }
     }
 }

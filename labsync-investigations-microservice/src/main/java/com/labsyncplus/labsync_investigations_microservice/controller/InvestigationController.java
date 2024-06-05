@@ -1,6 +1,6 @@
 package com.labsyncplus.labsync_investigations_microservice.controller;
 
-import com.labsyncplus.labsync_investigations_microservice.model.Investigation;
+import com.labsyncplus.labsync_investigations_microservice.model.entity.Investigation;
 import com.labsyncplus.labsync_investigations_microservice.service.InvestigationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

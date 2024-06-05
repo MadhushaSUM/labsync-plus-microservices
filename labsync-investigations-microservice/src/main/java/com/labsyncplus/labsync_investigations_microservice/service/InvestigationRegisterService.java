@@ -3,9 +3,9 @@ package com.labsyncplus.labsync_investigations_microservice.service;
 import com.labsyncplus.labsync_investigations_microservice.dao.InvestigationRegisterDao;
 import com.labsyncplus.labsync_investigations_microservice.exceptions.InvestigationNotFoundException;
 import com.labsyncplus.labsync_investigations_microservice.feign.PatientInterface;
-import com.labsyncplus.labsync_investigations_microservice.model.Investigation;
-import com.labsyncplus.labsync_investigations_microservice.model.InvestigationRegister;
-import com.labsyncplus.labsync_investigations_microservice.model.Patient;
+import com.labsyncplus.labsync_investigations_microservice.model.entity.Investigation;
+import com.labsyncplus.labsync_investigations_microservice.model.entity.InvestigationRegister;
+import com.labsyncplus.labsync_investigations_microservice.model.entity.Patient;
 import com.labsyncplus.labsync_investigations_microservice.utils.RequiredInvestigationFields;
 import com.labsyncplus.labsync_investigations_microservice.utils.SaveInvestigationData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +36,14 @@ public class InvestigationRegisterService {
             Optional<Investigation> investigation = investigationService.getInvestigationById(investigationId).getBody();
 
             if (patient != null && investigation.isPresent()) {
-                investigationRegisterDao.save(new InvestigationRegister(
-                        patient,
-                        investigation.get(),
-                        investigationDate,
-                        investigationCost
-                ));
+
+                InvestigationRegister register = new InvestigationRegister();
+                register.setPatient(patient);
+                register.setInvestigation(investigation.get());
+                register.setCost(investigationCost);
+                register.setRegisteredDate(investigationDate);
+
+                investigationRegisterDao.save(register);
 
                 return new ResponseEntity<>("Investigation registered", HttpStatus.CREATED);
             }
@@ -74,7 +76,7 @@ public class InvestigationRegisterService {
         }
     }
 
-    public ResponseEntity<String> addInvestigationData(int investigationRegisterId, Map<String, Object> investigationData) {
+    public ResponseEntity<String> addInvestigationData(long investigationRegisterId, Map<String, Object> investigationData) {
         Optional<InvestigationRegister> investigationRegister = investigationRegisterDao.findById(investigationRegisterId);
         if (investigationRegister.isEmpty()) return new ResponseEntity<>("Invalid investigation register Id", HttpStatus.BAD_REQUEST);
 
@@ -89,6 +91,8 @@ public class InvestigationRegisterService {
                     investigationData
             );
 
+            investigationRegisterDao.setDataAdded(investigationRegisterId);
+
             return new ResponseEntity<>("Investigation data saved", HttpStatus.CREATED);
 
         } catch (InvestigationNotFoundException e) {
@@ -98,7 +102,7 @@ public class InvestigationRegisterService {
         }
     }
 
-    public ResponseEntity<InvestigationRegister> getInvestigationRegistrationById(int investigationRegisterId) {
+    public ResponseEntity<InvestigationRegister> getInvestigationRegistrationById(long investigationRegisterId) {
         try {
             Optional<InvestigationRegister> investigationRegister = investigationRegisterDao.findById(investigationRegisterId);
 
