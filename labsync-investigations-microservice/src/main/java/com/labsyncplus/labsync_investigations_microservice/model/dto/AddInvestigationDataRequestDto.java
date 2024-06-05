@@ -7,5 +7,6 @@ import java.util.Map;
 @Data
 public class AddInvestigationDataRequestDto {
     private long investigationRegisterId;
+    private long investigationId;
     private Map<String, Object> investigationData;
 }

@@ -16,7 +16,7 @@ public interface PatientInterface {
     public ResponseEntity<List<Patient>> getAllPatients();
 
     @GetMapping("patient/getById")
-    public ResponseEntity<Patient> getPatientById(@RequestParam int id);
+    public ResponseEntity<Patient> getPatientById(@RequestParam long id);
 
     @PostMapping("patient/add")
     public ResponseEntity<Boolean> addNewPatient(@RequestBody Patient patient);

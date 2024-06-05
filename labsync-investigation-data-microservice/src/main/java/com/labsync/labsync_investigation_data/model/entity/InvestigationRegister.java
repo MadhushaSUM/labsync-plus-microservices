@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "investigation_register")
@@ -23,9 +24,13 @@ public class InvestigationRegister {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
-    @ManyToOne
-    @JoinColumn(name = "investigation_id")
-    private Investigation investigation;
+    @ManyToMany
+    @JoinTable(
+            name = "investigation_register_investigations",
+            joinColumns = @JoinColumn(name = "investigation_register_id"),
+            inverseJoinColumns = @JoinColumn(name = "investigation_id")
+    )
+    private List<Investigation> investigations;
 
     @Column(name = "registered_date")
     private LocalDate registeredDate;

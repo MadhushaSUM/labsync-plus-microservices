@@ -1,6 +1,7 @@
 package com.labsyncplus.labsync_investigations_microservice.utils;
 
 import com.labsyncplus.labsync_investigations_microservice.feign.InvestigationDataInterface;
+import com.labsyncplus.labsync_investigations_microservice.model.entity.Investigation;
 import com.labsyncplus.labsync_investigations_microservice.model.entity.InvestigationRegister;
 import com.labsyncplus.labsync_investigations_microservice.model.dto.AddInvestigationDataDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,11 @@ public class SaveInvestigationData {
         this.investigationDataInterface = investigationDataInterface;
     }
 
-    public void saveData(InvestigationRegister investigationRegister, Map<String, Object> investigationData) {
+    public void saveData(InvestigationRegister investigationRegister, Investigation investigation, Map<String, Object> investigationData) {
         try  {
             AddInvestigationDataDto dto = new AddInvestigationDataDto();
             dto.setInvestigationRegister(investigationRegister);
+            dto.setInvestigation(investigation);
             dto.setInvestigationData(investigationData);
             investigationDataInterface.addInvestigationData(dto);
 

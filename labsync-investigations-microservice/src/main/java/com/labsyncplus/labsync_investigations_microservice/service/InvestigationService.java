@@ -25,7 +25,7 @@ public class InvestigationService {
         }
     }
 
-    public ResponseEntity<Optional<Investigation>> getInvestigationById(int id) {
+    public ResponseEntity<Optional<Investigation>> getInvestigationById(long id) {
         try {
             return new ResponseEntity<>(investigationDao.findById(id), HttpStatus.OK);
         } catch (Exception e) {

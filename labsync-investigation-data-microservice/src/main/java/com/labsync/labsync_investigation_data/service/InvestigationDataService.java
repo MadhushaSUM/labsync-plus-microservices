@@ -1,6 +1,7 @@
 package com.labsync.labsync_investigation_data.service;
 
 import com.labsync.labsync_investigation_data.Dao.InvestigationDataDao;
+import com.labsync.labsync_investigation_data.model.entity.Investigation;
 import com.labsync.labsync_investigation_data.model.entity.InvestigationRegister;
 import com.labsync.labsync_investigation_data.model.entity.InvestigationData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,11 @@ public class InvestigationDataService {
     @Autowired
     InvestigationDataDao investigationDataDao;
 
-    public ResponseEntity<String> addInvestigationData(InvestigationRegister investigationRegister, Map<String, Object> data) {
+    public ResponseEntity<String> addInvestigationData(InvestigationRegister investigationRegister, Investigation investigation, Map<String, Object> data) {
         try {
             InvestigationData investigationData = new InvestigationData();
             investigationData.setInvestigationRegister(investigationRegister);
+            investigationData.setInvestigation(investigation);
             investigationData.setDataFromMap(data);
 
             investigationDataDao.save(investigationData);
@@ -34,12 +36,12 @@ public class InvestigationDataService {
 
     public ResponseEntity<InvestigationData> getInvestigationData(long investigationRegisterId) {
         try {
-            Optional<InvestigationData> fbsData = investigationDataDao.findByInvestigationRegisterId(investigationRegisterId);
+            Optional<InvestigationData> investigationData = investigationDataDao.findByInvestigationRegisterId(investigationRegisterId);
 
-            return fbsData.map(fastingBloodSugar -> new ResponseEntity<>(fastingBloodSugar, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+            return investigationData.map(fastingBloodSugar -> new ResponseEntity<>(fastingBloodSugar, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
 
         } catch (Exception e) {
-            System.err.println("Error while getting fbs data");
+            System.err.println("Error while getting investigation data");
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

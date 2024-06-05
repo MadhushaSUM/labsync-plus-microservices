@@ -5,6 +5,8 @@ import com.labsyncplus.labsync_investigations_microservice.model.dto.AddInvestig
 import com.labsyncplus.labsync_investigations_microservice.model.dto.RegNewInvestigationDto;
 import com.labsyncplus.labsync_investigations_microservice.service.InvestigationRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("investigationRegister")
+@CrossOrigin(origins = "http://localhost:3000")
 public class InvestigationRegisterController {
     @Autowired
     InvestigationRegisterService investigationRegisterService;
@@ -20,15 +23,16 @@ public class InvestigationRegisterController {
     public ResponseEntity<String> registerNewInvestigation(@RequestBody RegNewInvestigationDto newInvestigationData) {
         return investigationRegisterService.addNewRegistration(
                 newInvestigationData.getPatient_id(),
-                newInvestigationData.getInvestigation_id(),
+                newInvestigationData.getInvestigation_ids(),
                 newInvestigationData.getInvestigation_date(),
                 newInvestigationData.getInvestigation_cost()
         );
     }
 
-    @GetMapping("allRegistrations")
-    public ResponseEntity<List<InvestigationRegister>> getAllInvestigationRegistrations() {
-        return investigationRegisterService.getAllInvestigationRegistrations();
+    @GetMapping("getAll")
+    public ResponseEntity<Page<InvestigationRegister>> getAllInvestigationRegistrations(@RequestParam int limit, @RequestParam int skip) {
+        PageRequest pageable = PageRequest.of(skip/limit, limit);
+        return investigationRegisterService.getAllInvestigationRegistrations(pageable);
     }
 
     @GetMapping("getById")
@@ -50,6 +54,7 @@ public class InvestigationRegisterController {
     public ResponseEntity<String> addInvestigationData(@RequestBody AddInvestigationDataRequestDto addInvestigationDataRequestDto) {
         return investigationRegisterService.addInvestigationData(
                 addInvestigationDataRequestDto.getInvestigationRegisterId(),
+                addInvestigationDataRequestDto.getInvestigationId(),
                 addInvestigationDataRequestDto.getInvestigationData()
         );
     }

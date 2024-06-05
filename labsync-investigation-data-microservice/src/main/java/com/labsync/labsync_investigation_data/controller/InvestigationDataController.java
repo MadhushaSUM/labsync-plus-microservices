@@ -18,6 +18,7 @@ public class InvestigationDataController {
     public ResponseEntity<String> addInvestigationData(@RequestBody AddInvestigationDataDto dto) {
         return investigationDataService.addInvestigationData(
                 dto.getInvestigationRegister(),
+                dto.getInvestigation(),
                 dto.getInvestigationData()
         );
     }

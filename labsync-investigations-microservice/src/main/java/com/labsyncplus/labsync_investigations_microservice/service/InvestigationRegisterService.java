@@ -9,11 +9,14 @@ import com.labsyncplus.labsync_investigations_microservice.model.entity.Patient;
 import com.labsyncplus.labsync_investigations_microservice.utils.RequiredInvestigationFields;
 import com.labsyncplus.labsync_investigations_microservice.utils.SaveInvestigationData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,16 +33,22 @@ public class InvestigationRegisterService {
     @Autowired
     SaveInvestigationData saveInvestigationData;
 
-    public ResponseEntity<String> addNewRegistration(int patientId, int investigationId, LocalDate investigationDate, double investigationCost) {
+    public ResponseEntity<String> addNewRegistration(long patientId, List<Long> investigationIds, LocalDate investigationDate, double investigationCost) {
         try {
             Patient patient = patientInterface.getPatientById(patientId).getBody();
-            Optional<Investigation> investigation = investigationService.getInvestigationById(investigationId).getBody();
+            List<Investigation> investigations = new ArrayList<>();
+            for (long id: investigationIds) {
+                Optional<Investigation> investigation = investigationService.getInvestigationById(id).getBody();
+                if (investigation.isEmpty()) return new ResponseEntity<>("Invalid Investigation requested", HttpStatus.NOT_FOUND);
 
-            if (patient != null && investigation.isPresent()) {
+                investigations.add(investigation.get());
+            }
+
+            if (patient != null) {
 
                 InvestigationRegister register = new InvestigationRegister();
                 register.setPatient(patient);
-                register.setInvestigation(investigation.get());
+                register.setInvestigations(investigations);
                 register.setCost(investigationCost);
                 register.setRegisteredDate(investigationDate);
 
@@ -56,9 +65,9 @@ public class InvestigationRegisterService {
         }
     }
 
-    public ResponseEntity<List<InvestigationRegister>> getAllInvestigationRegistrations() {
+    public ResponseEntity<Page<InvestigationRegister>> getAllInvestigationRegistrations(PageRequest pageable) {
         try {
-            return new ResponseEntity<>(investigationRegisterDao.findAll(), HttpStatus.OK);
+            return new ResponseEntity<>(investigationRegisterDao.findAll(pageable), HttpStatus.OK);
         } catch (Exception e) {
             System.err.println("Error while retrieving all investigation registrations");
             e.printStackTrace();
@@ -76,18 +85,29 @@ public class InvestigationRegisterService {
         }
     }
 
-    public ResponseEntity<String> addInvestigationData(long investigationRegisterId, Map<String, Object> investigationData) {
+    public ResponseEntity<String> addInvestigationData(long investigationRegisterId, long investigationId, Map<String, Object> investigationData) {
         Optional<InvestigationRegister> investigationRegister = investigationRegisterDao.findById(investigationRegisterId);
         if (investigationRegister.isEmpty()) return new ResponseEntity<>("Invalid investigation register Id", HttpStatus.BAD_REQUEST);
 
+        Investigation foundInvestigation = null;
+        for (Investigation investigation: investigationRegister.get().getInvestigations()) {
+            if (investigation.getId() == investigationId ) {
+                foundInvestigation = investigation;
+                break;
+            }
+        }
+
+        if (foundInvestigation == null) return new ResponseEntity<>("Invalid investigation id", HttpStatus.NOT_FOUND);
+
         try {
             RequiredInvestigationFields.checkRequiredFieldAvailabilityAndType(
-                    investigationRegister.get().getInvestigation().getId(),
+                    investigationId,
                     investigationData
             );
 
             saveInvestigationData.saveData(
                     investigationRegister.get(),
+                    foundInvestigation,
                     investigationData
             );
 

@@ -22,6 +22,10 @@ public class InvestigationData {
     @JoinColumn(name = "investigation_register_id")
     private InvestigationRegister investigationRegister;
 
+    @ManyToOne
+    @JoinColumn(name = "investigation_id")
+    private Investigation investigation;
+
     @JdbcTypeCode(SqlTypes.JSON)
     private String data;
 

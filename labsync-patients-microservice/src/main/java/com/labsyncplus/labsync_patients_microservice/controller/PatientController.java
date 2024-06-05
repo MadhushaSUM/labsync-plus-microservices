@@ -19,7 +19,6 @@ public class PatientController {
 
     @GetMapping("getAll")
     public ResponseEntity<Page<Patient>> getAllPatients(@RequestParam int limit, @RequestParam int skip) {
-        System.out.println("Requested all patients");
         PageRequest pageable = PageRequest.of(skip/limit, limit);
         return patientService.getAllPatients(pageable);
     }
