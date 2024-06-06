@@ -3,6 +3,7 @@ package com.labsyncplus.labsync_investigations_microservice.service;
 import com.labsyncplus.labsync_investigations_microservice.dao.InvestigationRegisterDao;
 import com.labsyncplus.labsync_investigations_microservice.exceptions.InvestigationNotFoundException;
 import com.labsyncplus.labsync_investigations_microservice.feign.PatientInterface;
+import com.labsyncplus.labsync_investigations_microservice.model.entity.Doctor;
 import com.labsyncplus.labsync_investigations_microservice.model.entity.Investigation;
 import com.labsyncplus.labsync_investigations_microservice.model.entity.InvestigationRegister;
 import com.labsyncplus.labsync_investigations_microservice.model.entity.Patient;
@@ -33,9 +34,10 @@ public class InvestigationRegisterService {
     @Autowired
     SaveInvestigationData saveInvestigationData;
 
-    public ResponseEntity<String> addNewRegistration(long patientId, List<Long> investigationIds, LocalDate investigationDate, double investigationCost) {
+    public ResponseEntity<String> addNewRegistration(long patientId, long doctorId, List<Long> investigationIds, LocalDate investigationDate, double investigationCost) {
         try {
             Patient patient = patientInterface.getPatientById(patientId).getBody();
+            Doctor doctor = patientInterface.getDoctorById(doctorId).getBody();
             List<Investigation> investigations = new ArrayList<>();
             for (long id: investigationIds) {
                 Optional<Investigation> investigation = investigationService.getInvestigationById(id).getBody();
@@ -44,10 +46,11 @@ public class InvestigationRegisterService {
                 investigations.add(investigation.get());
             }
 
-            if (patient != null) {
+            if (patient != null && doctor != null) {
 
                 InvestigationRegister register = new InvestigationRegister();
                 register.setPatient(patient);
+                register.setDoctor(doctor);
                 register.setInvestigations(investigations);
                 register.setCost(investigationCost);
                 register.setRegisteredDate(investigationDate);

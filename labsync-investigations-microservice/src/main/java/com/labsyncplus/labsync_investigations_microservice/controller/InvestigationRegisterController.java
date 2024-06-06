@@ -19,10 +19,11 @@ public class InvestigationRegisterController {
     @Autowired
     InvestigationRegisterService investigationRegisterService;
 
-    @PostMapping("registerNew")
+    @PostMapping("add")
     public ResponseEntity<String> registerNewInvestigation(@RequestBody RegNewInvestigationDto newInvestigationData) {
         return investigationRegisterService.addNewRegistration(
                 newInvestigationData.getPatient_id(),
+                newInvestigationData.getDoctor_id(),
                 newInvestigationData.getInvestigation_ids(),
                 newInvestigationData.getInvestigation_date(),
                 newInvestigationData.getInvestigation_cost()
