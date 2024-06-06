@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("doctor")
 public class DoctorController {
@@ -18,6 +20,11 @@ public class DoctorController {
     public ResponseEntity<Page<Doctor>> getAllDoctors(@RequestParam int limit, @RequestParam int skip) {
         PageRequest pageable = PageRequest.of(skip/limit, limit);
         return doctorService.getAllDoctors(pageable);
+    }
+
+    @GetMapping("searchByName")
+    public ResponseEntity<List<Doctor>> searchDoctorsByName(@RequestParam String query) {
+        return doctorService.searchDoctorsByName(query);
     }
 
     @GetMapping("getById")

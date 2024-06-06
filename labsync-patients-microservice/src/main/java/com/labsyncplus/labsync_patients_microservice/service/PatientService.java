@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,6 +87,16 @@ public class PatientService {
             System.err.println("Error while deleting the patients");
             e.printStackTrace();
             return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<List<Patient>> searchPatientsByName(String query) {
+        try {
+            return new ResponseEntity<>(patientDao.findByNameContainingIgnoreCase(query), HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println("Error while getting searched patient data");
+            e.printStackTrace();
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
         }
     }
 }

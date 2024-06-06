@@ -23,6 +23,11 @@ public class PatientController {
         return patientService.getAllPatients(pageable);
     }
 
+    @GetMapping("searchByName")
+    public ResponseEntity<List<Patient>> searchPatientsByName(@RequestParam String query) {
+        return patientService.searchPatientsByName(query);
+    }
+
     @GetMapping("getById")
     public ResponseEntity<Patient> getPatientById(@RequestParam long id) {
         return patientService.getPatientById(id);
