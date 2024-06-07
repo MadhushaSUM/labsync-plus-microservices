@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,12 +36,13 @@ public class InvestigationDataService {
         }
     }
 
-    public ResponseEntity<InvestigationData> getInvestigationData(long investigationRegisterId) {
+    public ResponseEntity<List<Map<String, Object>>> getInvestigationData(long investigationRegisterId, long investigationId) {
         try {
-            Optional<InvestigationData> investigationData = investigationDataDao.findByInvestigationRegisterId(investigationRegisterId);
+            List<InvestigationData> investigationData = investigationDataDao.findByInvestigationRegisterIdAndInvestigationId(investigationRegisterId, investigationId);
 
-            return investigationData.map(fastingBloodSugar -> new ResponseEntity<>(fastingBloodSugar, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
-
+            List<Map<String, Object>> list = new ArrayList<>();
+            if (!investigationData.isEmpty()) list.add(investigationData.get(0).getDataAsMap());
+            return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (Exception e) {
             System.err.println("Error while getting investigation data");
             e.printStackTrace();
