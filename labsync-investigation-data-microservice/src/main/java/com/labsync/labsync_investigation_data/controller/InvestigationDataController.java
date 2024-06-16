@@ -1,11 +1,14 @@
 package com.labsync.labsync_investigation_data.controller;
 
 import com.labsync.labsync_investigation_data.model.Dto.AddInvestigationDataDto;
+import com.labsync.labsync_investigation_data.model.entity.InvestigationData;
 import com.labsync.labsync_investigation_data.service.InvestigationDataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +29,27 @@ public class InvestigationDataController {
         );
     }
 
+    @PutMapping("update")
+    public ResponseEntity<String> updateInvestigationData(@RequestBody AddInvestigationDataDto dto, @RequestParam long investigationDataId) {
+        return investigationDataService.updateInvestigationData(
+                investigationDataId,
+                dto.getInvestigation(),
+                dto.getInvestigationRegister(),
+                dto.getInvestigationData()
+        );
+    }
+
     @GetMapping("get")
     public ResponseEntity<List<Map<String, Object>>> getInvestigationData(@RequestParam long investigationRegisterId, @RequestParam long investigationId) {
         return investigationDataService.getInvestigationData(investigationRegisterId, investigationId);
+    }
+
+    @GetMapping("/investigation-data")
+    public ResponseEntity<List<InvestigationData>> getInvestigationDataWithinDateRange(
+            @RequestParam Long patientId,
+            @RequestParam Long investigationId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        return investigationDataService.getInvestigationDataWithinDateRange(patientId, investigationId, startDate, endDate);
     }
 }

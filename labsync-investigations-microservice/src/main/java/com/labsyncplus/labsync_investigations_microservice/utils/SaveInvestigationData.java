@@ -31,4 +31,17 @@ public class SaveInvestigationData {
             throw new IllegalArgumentException("Investigation data saving failed");
         }
     }
+
+    public void updateData(long investigationDataId, InvestigationRegister investigationRegister, Investigation investigation, Map<String, Object> investigationData) {
+        try  {
+            AddInvestigationDataDto dto = new AddInvestigationDataDto();
+            dto.setInvestigationRegister(investigationRegister);
+            dto.setInvestigation(investigation);
+            dto.setInvestigationData(investigationData);
+            investigationDataInterface.updateInvestigationData(dto, investigationDataId);
+
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Investigation data updating failed");
+        }
+    }
 }

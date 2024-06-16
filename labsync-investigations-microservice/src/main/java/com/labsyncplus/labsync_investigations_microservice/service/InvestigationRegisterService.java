@@ -151,4 +151,40 @@ public class InvestigationRegisterService {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public ResponseEntity<String> updateInvestigationData(long investigationDataId, long investigationRegisterId, long investigationId, Map<String, Object> investigationData) {
+        Optional<InvestigationRegister> investigationRegister = investigationRegisterDao.findById(investigationRegisterId);
+        if (investigationRegister.isEmpty()) return new ResponseEntity<>("Invalid investigation register Id", HttpStatus.BAD_REQUEST);
+
+        Investigation foundInvestigation = null;
+        for (Investigation investigation: investigationRegister.get().getInvestigations()) {
+            if (investigation.getId() == investigationId ) {
+                foundInvestigation = investigation;
+                break;
+            }
+        }
+
+        if (foundInvestigation == null) return new ResponseEntity<>("Invalid investigation id", HttpStatus.NOT_FOUND);
+
+        try {
+            RequiredInvestigationFields.checkRequiredFieldAvailabilityAndType(
+                    investigationId,
+                    investigationData
+            );
+
+            saveInvestigationData.updateData(
+                    investigationDataId,
+                    investigationRegister.get(),
+                    foundInvestigation,
+                    investigationData
+            );
+
+            return new ResponseEntity<>("Investigation data updated", HttpStatus.CREATED);
+
+        } catch (InvestigationNotFoundException e) {
+            System.err.println("Investigation is not defined in required fields Map");
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

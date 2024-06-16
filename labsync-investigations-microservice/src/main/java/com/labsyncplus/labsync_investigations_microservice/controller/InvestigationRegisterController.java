@@ -1,5 +1,6 @@
 package com.labsyncplus.labsync_investigations_microservice.controller;
 
+import com.labsyncplus.labsync_investigations_microservice.model.dto.UpdateInvestigationDataDto;
 import com.labsyncplus.labsync_investigations_microservice.model.entity.InvestigationRegister;
 import com.labsyncplus.labsync_investigations_microservice.model.dto.AddInvestigationDataRequestDto;
 import com.labsyncplus.labsync_investigations_microservice.model.dto.RegNewInvestigationDto;
@@ -57,6 +58,16 @@ public class InvestigationRegisterController {
                 addInvestigationDataRequestDto.getInvestigationRegisterId(),
                 addInvestigationDataRequestDto.getInvestigationId(),
                 addInvestigationDataRequestDto.getInvestigationData()
+        );
+    }
+
+    @PutMapping("updateInvestigationData")
+    public ResponseEntity<String> updateInvestigationData(@RequestBody UpdateInvestigationDataDto dto) {
+        return investigationRegisterService.updateInvestigationData(
+                dto.getInvestigationDataId(),
+                dto.getInvestigationRegisterId(),
+                dto.getInvestigationId(),
+                dto.getInvestigationData()
         );
     }
 }
