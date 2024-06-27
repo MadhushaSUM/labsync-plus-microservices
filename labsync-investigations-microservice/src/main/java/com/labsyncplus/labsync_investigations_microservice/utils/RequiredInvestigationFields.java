@@ -151,8 +151,16 @@ public class RequiredInvestigationFields {
             }
 
             Class<?> expectedType = fieldTypesMap.get(fieldName);
-            if (expectedType != null && !expectedType.isInstance(investigationData.get(fieldName))) {
-                throw new InvestigationNotFoundException("Field " + fieldName + " is not of type " + expectedType.getSimpleName());
+            Object fieldValue = investigationData.get(fieldName);
+
+            if (expectedType != null) {
+                if (expectedType == Double.class) {
+                    if (!(fieldValue instanceof Double) && !(fieldValue instanceof Integer)) {
+                        throw new InvestigationNotFoundException("Field " + fieldName + " is not of type " + expectedType.getSimpleName());
+                    }
+                } else if (!expectedType.isInstance(fieldValue)) {
+                    throw new InvestigationNotFoundException("Field " + fieldName + " is not of type " + expectedType.getSimpleName());
+                }
             }
         }
     }

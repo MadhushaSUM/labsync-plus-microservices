@@ -1,6 +1,8 @@
 package com.labsync.labsync_investigation_data.service;
 
 import com.labsync.labsync_investigation_data.Dao.InvestigationDataDao;
+import com.labsync.labsync_investigation_data.model.Dto.PatientHistoryEntry;
+import com.labsync.labsync_investigation_data.model.Dto.PatientInvestigationAnalysisDto;
 import com.labsync.labsync_investigation_data.model.entity.Investigation;
 import com.labsync.labsync_investigation_data.model.entity.InvestigationRegister;
 import com.labsync.labsync_investigation_data.model.entity.InvestigationData;
@@ -73,7 +75,7 @@ public class InvestigationDataService {
         }
     }
 
-    public ResponseEntity<List<InvestigationData>> getInvestigationDataWithinDateRange(
+    public ResponseEntity<PatientInvestigationAnalysisDto> getInvestigationDataWithinDateRange(
             long patientId,
             long investigationId,
             LocalDate startDate,
@@ -87,7 +89,19 @@ public class InvestigationDataService {
                     endDate
             );
 
-            return new ResponseEntity<>(dataList, HttpStatus.OK);
+
+            List<PatientHistoryEntry> responseList = new ArrayList<>();
+            for (InvestigationData data: dataList) {
+                PatientHistoryEntry entry = new PatientHistoryEntry();
+                entry.setDate(data.getInvestigationRegister().getRegisteredDate().toString());
+                entry.setData(data.getDataAsMap());
+
+                responseList.add(entry);
+            }
+            PatientInvestigationAnalysisDto dto = new PatientInvestigationAnalysisDto();
+            dto.setData(responseList);
+
+            return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (Exception e) {
             System.err.println("Error while getting investigation data within given date range");
             e.printStackTrace();
