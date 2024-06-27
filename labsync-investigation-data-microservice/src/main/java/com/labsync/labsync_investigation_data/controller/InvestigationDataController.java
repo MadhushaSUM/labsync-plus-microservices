@@ -44,7 +44,7 @@ public class InvestigationDataController {
         return investigationDataService.getInvestigationData(investigationRegisterId, investigationId);
     }
 
-    @GetMapping("/investigation-data")
+    @GetMapping("patient-analysis")
     public ResponseEntity<List<InvestigationData>> getInvestigationDataWithinDateRange(
             @RequestParam Long patientId,
             @RequestParam Long investigationId,
