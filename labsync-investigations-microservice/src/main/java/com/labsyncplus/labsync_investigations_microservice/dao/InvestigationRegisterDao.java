@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface InvestigationRegisterDao extends JpaRepository<InvestigationRegister, Long> {
@@ -19,4 +20,10 @@ public interface InvestigationRegisterDao extends JpaRepository<InvestigationReg
     @Transactional
     @Query("UPDATE InvestigationRegister ir SET ir.isDataAdded = true WHERE ir.id = :id")
     void setDataAdded(@Param("id") Long id);
+
+    @Query("SELECT register FROM InvestigationRegister register WHERE register.registeredDate BETWEEN :startDate AND :endDate")
+    List<InvestigationRegister> findInvestigationRegisterBetweenDateRange(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
 }

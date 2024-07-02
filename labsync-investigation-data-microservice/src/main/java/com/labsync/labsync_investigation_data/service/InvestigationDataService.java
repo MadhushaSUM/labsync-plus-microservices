@@ -109,9 +109,5 @@ public class InvestigationDataService {
         }
     }
 
-    public ResponseEntity<List<InvestigationData>> getTestAnalysisOverview(LocalDate startDate, LocalDate endDate) {
-        List<InvestigationData> data = investigationDataDao.findInvestigationDataBetweenDateRange(startDate, endDate);
 
-        return new ResponseEntity<>(data, HttpStatus.OK);
-    }
 }

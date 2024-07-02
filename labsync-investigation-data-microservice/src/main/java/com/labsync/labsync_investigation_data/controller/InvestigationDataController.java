@@ -53,12 +53,4 @@ public class InvestigationDataController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         return investigationDataService.getInvestigationDataWithinDateRange(patientId, investigationId, startDate, endDate);
     }
-
-    @GetMapping("test-analysis-overview")
-    public ResponseEntity<List<InvestigationData>> getTestAnalysisOverview(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
-    ) {
-        return investigationDataService.getTestAnalysisOverview(startDate, endDate);
-    }
 }

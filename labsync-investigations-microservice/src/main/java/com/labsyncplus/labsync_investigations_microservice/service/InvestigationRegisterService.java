@@ -187,4 +187,10 @@ public class InvestigationRegisterService {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    public ResponseEntity<List<InvestigationRegister>> getTestAnalysisOverview(LocalDate startDate, LocalDate endDate) {
+        List<InvestigationRegister> data = investigationRegisterDao.findInvestigationRegisterBetweenDateRange(startDate, endDate);
+
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
 }

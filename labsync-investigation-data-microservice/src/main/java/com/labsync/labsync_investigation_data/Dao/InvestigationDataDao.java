@@ -21,10 +21,4 @@ public interface InvestigationDataDao extends JpaRepository<InvestigationData, L
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
-
-    @Query("SELECT register FROM InvestigationRegister register WHERE register.registeredDate BETWEEN :startDate AND :endDate")
-    List<InvestigationData> findInvestigationDataBetweenDateRange(
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate
-    );
 }
