@@ -2,6 +2,7 @@ package com.labsync.labsync_investigation_data.controller;
 
 import com.labsync.labsync_investigation_data.model.Dto.AddInvestigationDataDto;
 import com.labsync.labsync_investigation_data.model.Dto.PatientInvestigationAnalysisDto;
+import com.labsync.labsync_investigation_data.model.entity.InvestigationData;
 import com.labsync.labsync_investigation_data.service.InvestigationDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -51,5 +52,13 @@ public class InvestigationDataController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         return investigationDataService.getInvestigationDataWithinDateRange(patientId, investigationId, startDate, endDate);
+    }
+
+    @GetMapping("test-analysis-overview")
+    public ResponseEntity<List<InvestigationData>> getTestAnalysisOverview(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        return investigationDataService.getTestAnalysisOverview(startDate, endDate);
     }
 }
